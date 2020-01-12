@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zk-cfg
+data: 
+  zoo.cfg: |
+    tickTime=2000
+    dataDir=/var/lib/zookeeper
+    clientPort=2181
+    dataLogDir=/var/lib/zookeeper/data/log
+    initLimit=10
+    syncLimit=5
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  selector:
+    matchLabels:
+      app: zookeeper
+  serviceName: zookeeper
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.5
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: follower
+        - containerPort: 3888
+          name: election
+        - containerPort: 8080
+          name: admin
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/zookeeper
+        - name: conf
+          mountPath: /conf
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      volumes:
+      - name: conf
+        configMap:
+          name: zk-cfg
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 8Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: zookeeper
+  name: zookeeper
+spec:
+  ports:
+  - name: client
+    port: 2181
+    protocol: TCP
+    targetPort: 2181
+  - name: follower
+    port: 2888
+    protocol: TCP
+    targetPort: 2888
+  - name: election
+    port: 3888
+    protocol: TCP
+    targetPort: 3888
+  - name: admin
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: zookeeper
+  type: ClusterIP
+status:
+  loadBalancer: {}
