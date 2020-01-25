@@ -1,0 +1,73 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: emoji
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: emoji
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: emoji-svc
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: emoji-svc
+    spec:
+      serviceAccountName: emoji
+      containers:
+      - env:
+        - name: GRPC_PORT
+          value: "8080"
+        - name: DT_CUSTOM_PROP
+          value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.name"
+        - name: DEPLOYMENT_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['deployment']"
+        - name: CONTAINER_IMAGE
+          value: "{{ .Values.image }}"
+        - name: KEPTN_PROJECT
+          value: "{{ .Chart.Name }}"
+        - name: KEPTN_STAGE
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.namespace"
+        - name: KEPTN_SERVICE
+          value: "carts"
+        - name: UNLEASH_SERVER_URL
+          value: "http://unleash.unleash-dev/api"
+        image: "{{ .Values.image }}"                  
+        name: emoji-svc
+        ports:
+        - containerPort: 8080
+          name: grpc
+        resources:
+          requests:
+            cpu: 100m
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emoji-svc
+spec:
+  selector:
+    app: emoji-svc
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: 8080
+    targetPort: 8080
+---

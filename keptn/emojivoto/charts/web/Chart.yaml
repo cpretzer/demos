@@ -1,0 +1,4 @@
+apiVersion: v1
+description: The emojivoto web helm chart!
+name: web-svc
+version: 0.8.0

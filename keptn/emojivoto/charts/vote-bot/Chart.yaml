@@ -1,0 +1,4 @@
+apiVersion: v1
+description: The emojivoto vote-bot helm chart!
+name: vote-bot
+version: 0.8.0

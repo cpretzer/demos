@@ -1,0 +1,3 @@
+image: buoyantio/emojivoto-web:v8
+namespace: emojivoto
+replicaCount: 3
