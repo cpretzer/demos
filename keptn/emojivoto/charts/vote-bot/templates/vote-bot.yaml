@@ -4,7 +4,6 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   name: vote-bot
-  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
