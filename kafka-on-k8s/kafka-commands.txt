@@ -1,0 +1,28 @@
+JMX_PORT=10014 JAVA_DEBUG_PORT=10013  bin/kafka-topics.sh \
+--create --bootstrap-server localhost:9092 --replication-factor 3 --partitions 1 --topic bananas
+
+--create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+
+JMX_PORT=10014 JAVA_DEBUG_PORT=10013 bin/zookeeper-shell.sh ls /brokers/ids
+
+JMX_PORT=10014 JAVA_DEBUG_PORT=10013 bin/zookeeper-shell.sh get /brokers/ids/1001
+
+JMX_PORT=10014 JAVA_DEBUG_PORT=10013 bin/kafka-console-producer.sh \
+ --broker-list localhost:9092 --topic bananas
+
+
+JMX_PORT=10014 JAVA_DEBUG_PORT=10013 bin/kafka-topics.sh \
+ --describe --bootstrap-server localhost:9092 --topic bananas
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic bananas
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --topic bananas
+
+
+kafka_2.12-2.4.0/bin/kafka-producer-perf-test.sh \
+    --topic bananas \
+    --throughput 100000 \
+    --record-size 100 \
+    --num-records 10000000 \
+    --producer-props acks=1 \
+      bootstrap.servers=kafka-0.support:9092,kafka-1.support:9092,kafka-2.support:9092

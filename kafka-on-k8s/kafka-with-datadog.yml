@@ -47,6 +47,65 @@ spec:
       annotations:
         linkerd.io/inject: enabled
         config.linkerd.io/proxy-log-level: debug
+        ad.datadoghq.com/k8skafka.check_names: '["kafka", "kafka_consumer", "kafka_consumer"]'
+        ad.datadoghq.com/k8skafka.instances: |
+          [{
+            "host": "%%host%%",
+            "port": "10004",
+            "tags": ["kafka:broker", "namespace:staging"]
+          }, {
+            "kafka_connect_str": "%%host%%:9092",
+            "consumer_groups": {
+              "engineTracesConsumer": { "engine-traces": [] },
+              "engine-notifications-pager-duty": { "engine-notifications-pager-duty": [] },
+              "engine-notifications-slack": { "engine-notifications-slack": [] }
+            },
+            "tags": ["namespace:staging"]
+          }, {
+            "kafka_connect_str": "%%host%%:9092",
+            "consumer_groups": {
+              "engine-datadogforwarder-20191125": {
+                "engine-datadogforwarder-20191125-datadogStatsByServiceId-repartition": [],
+                "engine-reports-stats": []
+              }
+            },
+            "tags": ["namespace:staging"]
+          }]
+        # Note that each kafka_consumer check instance should collect at most
+        # 500 partition contexts of data by default. A partition context is NOT
+        # a partition, despite what some misleading Datadog documentation may
+        # have you believe.
+        #
+        # To compute the partition context count for a kafka_consumer check
+        # instance, count how many unique (consumer_group, topic, partition)
+        # triplets are specified in your check, and add that to how many
+        # unique (topic, partition) pairs are specified in your check. E.g. if
+        # your check has
+        # "consumer_groups": {
+        #   "group_1": {
+        #     "topic_1": [],
+        #     "topic_2": []
+        #   },
+        #   "group_2": {
+        #     "topic_1": []
+        #   }
+        # }
+        # and each topic has 4 partitions, then the partition context count is
+        # (1*2*4 + 1*1*4) + (2*4) = 20.
+        #
+        # If we need more, adjust max_partitition_contexts in the check's
+        # init_config, or add another kafka_consumer check instance. (The
+        # second is preferred to avoid individual check runs from taking too
+        # long.)
+        #
+        # Also relevant: if you go over the limit, the kafka_consumer check
+        # doesn't drop the metrics, but prints out a warning on every check
+        # run.
+        ad.datadoghq.com/k8skafka.init_configs: |
+          [{
+            "is_jmx": true,
+            "collect_default_metrics": true
+          }, {}, {}]        
     spec:
       terminationGracePeriodSeconds: 30
       containers:
@@ -57,7 +116,7 @@ spec:
         - containerPort: 9092
           name: server
         - containerPort: 10004
-          name: jmx          
+          name: jmx
         volumeMounts:
         - name: logs
           mountPath: /tmp
@@ -111,7 +170,7 @@ spec:
   - name: server
     port: 9092
   - port: 10004
-    name: jmx
+    name: jmx    
   clusterIP: None
   selector:
     statefulset.kubernetes.io/pod-name: kafka
