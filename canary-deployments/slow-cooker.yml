@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: load
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: load
+    spec:
+      containers:
+      - image: buoyantio/slow_cooker:1.2.0
+        name: slow-cooker
+        env:
+          - name: QPS
+            value: "10"
+          - name: CONCURRENCY
+            value: "1"
+        command: ["/bin/sh", "-c"]
+        args:
+          - |-
+            slow_cooker -qps ${QPS} -concurrency ${CONCURRENCY} http://frontend.test:8080
+---
