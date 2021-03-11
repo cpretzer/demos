@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yb-demo-apps
+  namespace: yb-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yb-demo
+  template:
+    metadata:
+      name: yb-demo-apps
+      namespace: yb-demo
+      labels:
+        app: yb-demo
+    spec:
+      containers:
+      - name: yb-demo-apps
+        image: yugabytedb/yb-sample-apps
+        command: ["java"]
+        args:
+        - "-jar"
+        - yb-sample-apps.jar
+        - java-client-sql
+        - --workload
+        - SqlInserts
+        - --nodes
+        - yb-tserver-service.yb-demo.svc.cluster.local:5433
+        - --num_threads_write
+        - "4"
+        - --num_threads_read
+        - "6"
