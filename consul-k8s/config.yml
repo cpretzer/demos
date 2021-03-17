@@ -1,0 +1,5 @@
+global:
+  datacenter: l5d-dc
+  enablePodSecurityPolicies: true
+ui:
+  enabled: true
