@@ -1,0 +1,9 @@
+global:
+  datacenter: l5d-dc
+  enablePodSecurityPolicies: true
+ui:
+  enabled: true
+syncCatalog:
+  enabled: true
+  toConsul: true
+  toK8S: false
