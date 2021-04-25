@@ -1,0 +1,3 @@
+name: linkerd
+runtime: go
+description: A minimal Equinix Metal Go Pulumi program
