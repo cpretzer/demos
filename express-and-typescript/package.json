@@ -1,0 +1,14 @@
+{
+  "name": "express-and-typescript",
+  "version": "0.1.0",
+  "description": "Toy code for using typescript and microservices",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "cpretzer",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.17.1"
+  }
+}
