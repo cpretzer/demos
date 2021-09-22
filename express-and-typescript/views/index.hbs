@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <script type='application/javascript'>
+            function startWorkout() {
+                console.log("go!");
+            }
+        </script>        
+    </head>
+    <body>
+        <h1>Your 7 Minute Workout</h1>
+        <div>
+            <button id='go-button' onclick="startWorkout()">Go!</button>
+        </div>
+        <div>
+            <ul>
+            {{#each exercises}}
+                <li>{{name}} 
+                    {{#alternative}} 
+                        or {{this}}
+                    {{/alternative}}
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+    </body>
+    <footer>
+    </footer>
+</div>
