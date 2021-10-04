@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2p
+spec:
+  selector:
+    matchLabels:
+      app: p2p
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: p2p
+    spec:
+      containers:
+      - name: p2p
+        image: ghcr.io/cpretzer/bb-node:v0.1.0
+        resources:
+          limits:
+            memory: 25Mi
+            cpu: 500m
+          requests:
+            memory: 5Mi
+            cpu: 100m
+        command:
+        - /nodejs/bin/node
+        - index.js
+        - point-to-point-channel
+        - "3000"
+        - http://terminode:3000/
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  p2p
+spec:
+  selector:
+    app:  p2p
+  type:  NodePort
+  ports:
+  - name:  http
+    port:  3000
+    targetPort:  3000

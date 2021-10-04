@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slow-cooker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slow-cooker
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: disabled
+      labels:
+        app: slow-cooker
+    spec:
+      containers:
+      - name: slow-cooker
+        image: buoyantio/slow_cooker:latest
+        args:
+        - "-concurrency=100"
+        - "-interval=30s"
+        - "-noLatencySummary"
+        - "-qps=100"
+        - "http://p2p:3000"
+        ports:
+        - name: metrics
+          containerPort: 8505
+        resources:
+          requests:
+            cpu: 250m
+            memory: 10Mi
+          limits:
+            cpu: 500m
+            memory: 50Mi
