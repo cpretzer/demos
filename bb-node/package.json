@@ -1,0 +1,20 @@
+{
+  "name": "bb-node",
+  "version": "0.1.0",
+  "description": "A node version of https://github.com/buoyantio/bb",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpretzer/demos/bb-node"
+  },
+  "author": "cpretzer",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.22.0",
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0"
+  }
+}
