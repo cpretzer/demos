@@ -116,7 +116,7 @@ helm repo up
 
 for cluster in dev east west ; do
     helm install linkerd-failover -n linkerd-failover --create-namespace \
-    --kube-context $cluster --devel linkerd-edge/linkerd-failover
+    --kube-context "k3d-$cluster" --devel linkerd-edge/linkerd-failover
 done
 
 # deploy failover YAML
