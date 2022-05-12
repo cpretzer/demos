@@ -80,7 +80,7 @@ for cluster in dev east west ; do
         --ca=ca.crt \
         --ca-key=ca.key \
         --profile=intermediate-ca \
-        --not-after 8760h --no-password --insecure
+        --not-after 8760h --no-password --insecure -f
 
     # Install Linkerd into the cluster.
     $LINKERD --context="k3d-$cluster" install \
