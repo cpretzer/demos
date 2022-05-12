@@ -1,6 +1,7 @@
 #!/bin/bash
 ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
 LINKERD="${LINKERD:-linkerd}"
+MIN_LINKERD_VERSION=2.11.2
 
 # check for linkerd, k3d, step, helm, and kubectl
 if ! type kubectl > /dev/null; then
@@ -31,6 +32,13 @@ if ! type helm > /dev/null; then
     echo "\n\nInstall helm:"
     echo "\n\n https://helm.sh/docs/intro/install/"
     exit 1
+fi
+
+# verify the linkerd version
+
+if ! $( linkerd version --short | head -n 1| cut -c 1-) == "$MIN_LINKERD_VERSION"; then
+    echo "\n Update linkerd version to $MIN_LINKERD_VERSION"
+    echo "\n curl -sL https://run.linkerd.io/install | sh"
 fi
 
 # create the clusters
