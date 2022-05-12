@@ -96,8 +96,11 @@ for cluster in dev east west ; do
     sleep 30
     while ! $LINKERD --context="k3d-$cluster" check ; do :; done
 
-    $LINKERD --context="k3d-$cluster" viz install |
+    $LINKERD --context="k3d-$cluster" viz install --set clusterDomain="${ORG_DOMAIN}" |
         kubectl --context="k3d-$cluster" apply -f -
+
+    sleep 10
+    while ! $LINKERD --context="k3d-$cluster" viz check ; do :; done
 
     # Setup the multicluster components on the server
     $LINKERD --context="k3d-$cluster" multicluster install |
@@ -107,7 +110,13 @@ done
 # install emojivoto
 for cluster in dev east west ; do
     kubectl --context="k3d-$cluster" apply -f https://run.linkerd.io/emojivoto.yml
+    kubectl get deploy -n emojivoto --context="k3d-$cluster" -oyaml | 
+        linkerd --context="k3d-$cluster" inject - | 
+        kubectl apply --context="k3d-$cluster" -f -
 done
+
+# export services in west cluster
+kubectl label svc -n emojivoto --context k3d-west mirror.linkerd.io/exported=true
 
 # install linkerd-failover
 # In case you haven't added the linkerd-edge repo already
@@ -120,4 +129,4 @@ for cluster in dev east west ; do
 done
 
 # deploy failover YAML
-kubectl apply -f failover-config
+kubectl apply -f failover-config -n emojivoto
