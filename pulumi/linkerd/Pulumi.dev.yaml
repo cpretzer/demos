@@ -1,0 +1,4 @@
+config:
+  equinix-metal:authToken:
+    secure: AAABAGk5utZ9ieLX3E05POh0Wug6jURnhjQdZ4uEDhBfx1/UGa+8/u8r5wRuqgjykaHmlY1ohpLq/9vkLm6/yw==
+  linkerd:workerNodeCount: 1

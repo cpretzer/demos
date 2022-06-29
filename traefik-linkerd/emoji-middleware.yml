@@ -1,0 +1,10 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: emojivoto-header
+  namespace: traefik
+spec:
+  headers:
+    customRequestHeaders:
+      l5d-dst-override: "web-svc.emojivoto.svc.cluster.local:80"
+      cpretzer: "test"

@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: prom-ambassador-mapping
+      service: http://linkerd-prometheus.linkerd.svc.cluster.local:9090
+      host: linkerd-prom.pretzer.dev
+      prefix: /
+      add_linkerd_headers: true
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"getambassador.io/config":"---\napiVersion: ambassador/v1\nkind: Mapping\nname: prom-ambassador-mapping\nservice: http://linkerd-prometheus.linkerd.svc.cluster.local:9090\nhost: linkerd-prom.pretzer.dev\nprefix: /\nadd_linkerd_headers: true\n"},"name":"prom-ambassador","namespace":"linkerd"},"spec":{"ports":[{"name":"http","port":9090,"targetPort":"http"}],"selector":{"app":"linkerd-prometheus"}}}
+  creationTimestamp: "2020-04-01T07:34:45Z"
+  name: prom-ambassador
+  namespace: linkerd
+  resourceVersion: "1335090"
+  selfLink: /api/v1/namespaces/linkerd/services/prom-ambassador
+  uid: 78255527-6cc3-46e3-8d2d-3b59d9f2914d
+spec:
+  clusterIP: 10.245.124.66
+  ports:
+  - name: http
+    port: 9090
+    protocol: TCP
+    targetPort: http
+  selector:
+    linkerd.io/control-plane-component: prometheus
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
