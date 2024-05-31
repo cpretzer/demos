@@ -96,7 +96,7 @@ for cluster in dev east west ; do
     sleep 30
     while ! $LINKERD --context="k3d-$cluster" check ; do :; done
 
-    $LINKERD --context="k3d-$cluster" viz install --set clusterDomain="${ORG_DOMAIN}" |
+    $LINKERD --context="k3d-$cluster" viz install --set clusterDomain="${domain}" |
         kubectl --context="k3d-$cluster" apply -f -
 
     sleep 10

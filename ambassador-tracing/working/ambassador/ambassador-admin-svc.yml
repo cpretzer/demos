@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/managed-by":"getambassador.io","service":"ambassador-admin"},"name":"ambassador-admin","namespace":"ambassador"},"spec":{"ports":[{"name":"ambassador-admin","port":8877,"targetPort":8877}],"selector":{"service":"ambassador"},"type":"NodePort"}}
+  creationTimestamp: "2020-04-21T19:06:50Z"
+  labels:
+    app.kubernetes.io/managed-by: getambassador.io
+    service: ambassador-admin
+  name: ambassador-admin
+  namespace: ambassador
+  resourceVersion: "3896"
+  selfLink: /api/v1/namespaces/ambassador/services/ambassador-admin
+  uid: 432b54c9-f04f-43fc-bf14-7bed5db33aba
+spec:
+  clusterIP: 10.63.248.134
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: ambassador-admin
+    nodePort: 30464
+    port: 8877
+    protocol: TCP
+    targetPort: 8877
+  selector:
+    service: ambassador
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-server
+spec:
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server  
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: echo-server
+        image: ghcr.io/cpretzer/wsecho:v0.1.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+          name: tcp
+        command: ["/out/echo-server"]
+        args: ["--addr", "0.0.0.0:8080"]

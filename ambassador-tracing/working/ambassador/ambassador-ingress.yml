@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/backends: '{"k8s-be-31617--e1d12c985847080f":"HEALTHY"}'
+    ingress.kubernetes.io/forwarding-rule: k8s2-fr-uxlxdq9k-ambassador-ambassador-ingress-hd2qk6b7
+    ingress.kubernetes.io/target-proxy: k8s2-tp-uxlxdq9k-ambassador-ambassador-ingress-hd2qk6b7
+    ingress.kubernetes.io/url-map: k8s2-um-uxlxdq9k-ambassador-ambassador-ingress-hd2qk6b7
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.k8s.io/v1beta1","kind":"Ingress","metadata":{"annotations":{},"name":"ambassador-ingress","namespace":"ambassador"},"spec":{"backend":{"serviceName":"ambassador","servicePort":8080}}}
+  creationTimestamp: "2020-04-21T21:45:06Z"
+  finalizers:
+  - networking.gke.io/ingress-finalizer-V2
+  generation: 1
+  name: ambassador-ingress
+  namespace: ambassador
+  resourceVersion: "56690"
+  selfLink: /apis/extensions/v1beta1/namespaces/ambassador/ingresses/ambassador-ingress
+  uid: c5f86911-c18c-4080-ba07-5602b06ed0b7
+spec:
+  backend:
+    serviceName: ambassador
+    servicePort: 8080
+status:
+  loadBalancer:
+    ingress:
+    - ip: 35.241.37.224

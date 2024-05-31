@@ -1,0 +1,87 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"emoji-svc","namespace":"emojivoto"},"spec":{"ports":[{"name":"grpc","port":8080,"targetPort":8080}],"selector":{"app":"emoji-svc"}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    name: emoji-svc
+    namespace: emojivoto
+    resourceVersion: "14308"
+    selfLink: /api/v1/namespaces/emojivoto/services/emoji-svc
+    uid: 6e9696da-5b43-4f31-80da-f3e2c7759a44
+  spec:
+    clusterIP: 10.63.241.152
+    ports:
+    - name: grpc
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: emoji-svc
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"voting-svc","namespace":"emojivoto"},"spec":{"ports":[{"name":"grpc","port":8080,"targetPort":8080},{"name":"prom","port":8801,"targetPort":8801}],"selector":{"app":"voting-svc"}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    name: voting-svc
+    namespace: emojivoto
+    resourceVersion: "14313"
+    selfLink: /api/v1/namespaces/emojivoto/services/voting-svc
+    uid: eaeae2c9-74c1-421a-be9f-83f9da4d3b73
+  spec:
+    clusterIP: 10.63.240.71
+    ports:
+    - name: grpc
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: prom
+      port: 8801
+      protocol: TCP
+      targetPort: 8801
+    selector:
+      app: voting-svc
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"web-svc","namespace":"emojivoto"},"spec":{"ports":[{"name":"http","port":80,"targetPort":8080}],"selector":{"app":"web-svc"},"type":"LoadBalancer"}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    name: web-svc
+    namespace: emojivoto
+    resourceVersion: "16790"
+    selfLink: /api/v1/namespaces/emojivoto/services/web-svc
+    uid: 868381b7-eb29-4ffa-94f0-db288c9b042b
+  spec:
+    clusterIP: 10.63.246.209
+    externalTrafficPolicy: Cluster
+    ports:
+    - name: http
+      nodePort: 30006
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: web-svc
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

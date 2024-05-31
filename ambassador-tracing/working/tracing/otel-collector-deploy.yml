@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "4"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"opentelemetry","component":"otel-collector"},"name":"otel-collector","namespace":"tracing"},"spec":{"minReadySeconds":5,"progressDeadlineSeconds":120,"replicas":1,"selector":{"matchLabels":{"app":"opentelemetry","component":"otel-collector"}},"template":{"metadata":{"annotations":{"config.linkerd.io/trace-collector":"otel-collector.tracing:55678","linkerd.io/inject":"enabled","prometheus.io/path":"/metrics","prometheus.io/port":"8888","prometheus.io/scrape":"true"},"labels":{"app":"opentelemetry","component":"otel-collector"}},"spec":{"containers":[{"command":["/otelcol","--config=/conf/otel-collector-config.yaml","--mem-ballast-size-mib=683","--log-level=debug"],"env":[{"name":"GOGC","value":"80"}],"image":"otel/opentelemetry-collector:0.3.0","livenessProbe":{"httpGet":{"path":"/","port":13133}},"name":"otel-collector","ports":[{"containerPort":55678},{"containerPort":9411},{"containerPort":8888}],"readinessProbe":{"httpGet":{"path":"/","port":13133}},"resources":{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"200m","memory":"400Mi"}},"volumeMounts":[{"mountPath":"/conf","name":"otel-collector-config-vol"}]}],"volumes":[{"emptyDir":{},"name":"empty-dir-tmp"},{"configMap":{"items":[{"key":"otel-collector-config","path":"otel-collector-config.yaml"}],"name":"otel-collector-conf"},"name":"otel-collector-config-vol"}]}}}}
+  creationTimestamp: "2020-04-22T21:51:01Z"
+  generation: 4
+  labels:
+    app: opentelemetry
+    component: otel-collector
+  name: otel-collector
+  namespace: tracing
+  resourceVersion: "536552"
+  selfLink: /apis/apps/v1/namespaces/tracing/deployments/otel-collector
+  uid: ad2af0bb-2938-48af-b45b-ab8b11f5201a
+spec:
+  minReadySeconds: 5
+  progressDeadlineSeconds: 120
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: opentelemetry
+      component: otel-collector
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/trace-collector: otel-collector.tracing:55678
+        kubectl.kubernetes.io/restartedAt: "2020-04-22T15:40:44-07:00"
+        linkerd.io/inject: enabled
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8888"
+        prometheus.io/scrape: "true"
+      creationTimestamp: null
+      labels:
+        app: opentelemetry
+        component: otel-collector
+    spec:
+      containers:
+      - command:
+        - /otelcol
+        - --config=/conf/otel-collector-config.yaml
+        - --mem-ballast-size-mib=683
+        - --log-level=debug
+        env:
+        - name: GOGC
+          value: "80"
+        image: otel/opentelemetry-collector:0.3.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 13133
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: otel-collector
+        ports:
+        - containerPort: 55678
+          protocol: TCP
+        - containerPort: 9411
+          protocol: TCP
+        - containerPort: 8888
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 13133
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 400Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /conf
+          name: otel-collector-config-vol
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: empty-dir-tmp
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: otel-collector-config
+            path: otel-collector-config.yaml
+          name: otel-collector-conf
+        name: otel-collector-config-vol
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-04-22T21:51:17Z"
+    lastUpdateTime: "2020-04-22T21:51:17Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2020-04-22T21:51:01Z"
+    lastUpdateTime: "2020-04-22T22:40:58Z"
+    message: ReplicaSet "otel-collector-64bd967b4" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

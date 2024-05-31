@@ -1,0 +1,18 @@
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/trace-collector: otel-collector.tracing:55678
+    spec:
+      containers:
+      - name: ambassador    
+        env:
+        - name: AMBASSADOR_CONFIG_BASE_DIR
+          value: /tmp/ambassador-config              
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir-tmp
+      volumes:
+      - emptyDir: {}
+        name: empty-dir-tmp

@@ -1,0 +1,41 @@
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: emojivoto
+  name: internal-grpc
+  labels:
+    app.kubernetes.io/part-of: emojivoto
+    app.kubernetes.io/version: v11
+spec:
+  # Matches all servers marked as `internal-grpc` (emoji and voting) and allows authenticated
+  # requests only from the web service.
+  server:
+    selector:
+      matchLabels:
+        emojivoto/api: internal-grpc
+  client:
+    meshTLS:
+      serviceAccounts:
+        - name: web
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: emojivoto
+  name: web-public
+  labels:
+    app.kubernetes.io/part-of: emojivoto
+    app.kubernetes.io/name: web
+    app.kubernetes.io/version: v11
+spec:
+  server:
+    name: web-http
+  # Allow all clients to access the web HTTP port without regard for
+  # authentication. If unauthenticated connections are permitted, there is no
+  # need to describe authenticated clients.
+  client:
+    unauthenticated: true
+    networks:
+      - cidr: 0.0.0.0/0
+      - cidr: ::/0

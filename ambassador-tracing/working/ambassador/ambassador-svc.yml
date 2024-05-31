@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"ambassador","namespace":"ambassador"},"spec":{"ports":[{"port":8080,"targetPort":8080}],"selector":{"service":"ambassador"},"type":"NodePort"}}
+  creationTimestamp: "2020-04-21T19:25:51Z"
+  name: ambassador
+  namespace: ambassador
+  resourceVersion: "10640"
+  selfLink: /api/v1/namespaces/ambassador/services/ambassador
+  uid: 3175eb3b-217b-4e36-aeae-8234388f0613
+spec:
+  clusterIP: 10.63.246.222
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 31617
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    service: ambassador
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

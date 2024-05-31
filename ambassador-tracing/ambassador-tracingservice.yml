@@ -1,0 +1,14 @@
+---
+apiVersion: getambassador.io/v2
+kind:  TracingService
+metadata:
+  name:  tracing
+  namespace: ambassador
+spec:
+  service: "otel-collector.tracing:9411"
+  driver: zipkin
+  config: {}
+  tag_headers:
+  - ":authority"
+  - ":path"
+

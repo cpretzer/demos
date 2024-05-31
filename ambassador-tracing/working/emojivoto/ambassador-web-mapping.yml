@@ -1,0 +1,19 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"getambassador.io/v2","kind":"Mapping","metadata":{"annotations":{},"name":"web","namespace":"emojivoto"},"spec":{"add_linkerd_headers":true,"prefix":"/","service":"web-svc:80"}}
+  creationTimestamp: "2020-04-21T19:40:46Z"
+  generation: 2
+  name: web
+  namespace: emojivoto
+  resourceVersion: "17021"
+  selfLink: /apis/getambassador.io/v2/namespaces/emojivoto/mappings/web
+  uid: 4a67751c-b46a-4952-8b67-4007ef013c1c
+spec:
+  add_linkerd_headers: true
+  prefix: /
+  service: web-svc:80
+status:
+  state: Running

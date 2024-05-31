@@ -1,0 +1,2 @@
+policyController:
+  logLevel: "linkerd=debug,info"

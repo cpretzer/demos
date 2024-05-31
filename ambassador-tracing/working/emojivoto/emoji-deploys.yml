@@ -1,0 +1,338 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "8"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"emoji","app.kubernetes.io/part-of":"emojivoto","app.kubernetes.io/version":"v9"},"name":"emoji","namespace":"emojivoto"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"emoji-svc"}},"template":{"metadata":{"labels":{"app":"emoji-svc"}},"spec":{"containers":[{"env":[{"name":"GRPC_PORT","value":"8080"}],"image":"buoyantio/emojivoto-emoji-svc:v9","name":"emoji-svc","ports":[{"containerPort":8080,"name":"grpc"}],"resources":{"requests":{"cpu":"100m"}}}],"serviceAccountName":"emoji"}}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    generation: 8
+    labels:
+      app.kubernetes.io/name: emoji
+      app.kubernetes.io/part-of: emojivoto
+      app.kubernetes.io/version: v9
+    name: emoji
+    namespace: emojivoto
+    resourceVersion: "531421"
+    selfLink: /apis/apps/v1/namespaces/emojivoto/deployments/emoji
+    uid: d099880b-545a-4aeb-b58c-d08c0321f7c5
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: emoji-svc
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          config.linkerd.io/trace-collector: otel-collector.tracing:55678
+          kubectl.kubernetes.io/restartedAt: "2020-04-22T15:24:56-07:00"
+        creationTimestamp: null
+        labels:
+          app: emoji-svc
+      spec:
+        containers:
+        - env:
+          - name: GRPC_PORT
+            value: "8080"
+          - name: OC_AGENT_HOST
+            value: otel-collector.tracing:55678
+          image: buoyantio/emojivoto-emoji-svc:v9
+          imagePullPolicy: IfNotPresent
+          name: emoji-svc
+          ports:
+          - containerPort: 8080
+            name: grpc
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: emoji
+        serviceAccountName: emoji
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-04-22T12:03:23Z"
+      lastUpdateTime: "2020-04-22T12:03:23Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-04-21T19:37:22Z"
+      lastUpdateTime: "2020-04-22T22:25:12Z"
+      message: ReplicaSet "emoji-9566bbd8b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 8
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "11"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"vote-bot","app.kubernetes.io/part-of":"emojivoto","app.kubernetes.io/version":"v9"},"name":"vote-bot","namespace":"emojivoto"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"vote-bot"}},"template":{"metadata":{"labels":{"app":"vote-bot"}},"spec":{"containers":[{"command":["emojivoto-vote-bot"],"env":[{"name":"WEB_HOST","value":"web-svc.emojivoto:80"}],"image":"buoyantio/emojivoto-web:v9","name":"vote-bot","resources":{"requests":{"cpu":"10m"}}}]}}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    generation: 12
+    labels:
+      app.kubernetes.io/name: vote-bot
+      app.kubernetes.io/part-of: emojivoto
+      app.kubernetes.io/version: v9
+    name: vote-bot
+    namespace: emojivoto
+    resourceVersion: "539005"
+    selfLink: /apis/apps/v1/namespaces/emojivoto/deployments/vote-bot
+    uid: e93b01b2-0a0b-405e-804d-f06840081d76
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: vote-bot
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2020-04-22T15:24:56-07:00"
+        creationTimestamp: null
+        labels:
+          app: vote-bot
+      spec:
+        containers:
+        - command:
+          - emojivoto-vote-bot
+          env:
+          - name: WEB_HOST
+            value: 35.241.37.224
+          image: buoyantio/emojivoto-web:v9
+          imagePullPolicy: IfNotPresent
+          name: vote-bot
+          resources:
+            requests:
+              cpu: 10m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2020-04-22T21:44:18Z"
+      lastUpdateTime: "2020-04-22T21:44:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-04-21T19:37:22Z"
+      lastUpdateTime: "2020-04-22T22:44:28Z"
+      message: ReplicaSet "vote-bot-585db76657" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 12
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "8"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"voting","app.kubernetes.io/part-of":"emojivoto","app.kubernetes.io/version":"v9"},"name":"voting","namespace":"emojivoto"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"voting-svc"}},"template":{"metadata":{"labels":{"app":"voting-svc"}},"spec":{"containers":[{"env":[{"name":"GRPC_PORT","value":"8080"},{"name":"PROM_PORT","value":"8801"}],"image":"buoyantio/emojivoto-voting-svc:v9","name":"voting-svc","ports":[{"containerPort":8080,"name":"grpc"},{"containerPort":8801,"name":"prom"}],"resources":{"requests":{"cpu":"100m"}}}],"serviceAccountName":"voting"}}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    generation: 8
+    labels:
+      app.kubernetes.io/name: voting
+      app.kubernetes.io/part-of: emojivoto
+      app.kubernetes.io/version: v9
+    name: voting
+    namespace: emojivoto
+    resourceVersion: "531381"
+    selfLink: /apis/apps/v1/namespaces/emojivoto/deployments/voting
+    uid: dde3f4d4-863a-4f7a-afa3-99379361e680
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: voting-svc
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          config.linkerd.io/trace-collector: otel-collector.tracing:55678
+          kubectl.kubernetes.io/restartedAt: "2020-04-22T15:24:56-07:00"
+        creationTimestamp: null
+        labels:
+          app: voting-svc
+      spec:
+        containers:
+        - env:
+          - name: GRPC_PORT
+            value: "8080"
+          - name: PROM_PORT
+            value: "8801"
+          - name: OC_AGENT_HOST
+            value: otel-collector.tracing:55678
+          image: buoyantio/emojivoto-voting-svc:v9
+          imagePullPolicy: IfNotPresent
+          name: voting-svc
+          ports:
+          - containerPort: 8080
+            name: grpc
+            protocol: TCP
+          - containerPort: 8801
+            name: prom
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: voting
+        serviceAccountName: voting
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-04-22T12:03:21Z"
+      lastUpdateTime: "2020-04-22T12:03:21Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-04-21T19:37:22Z"
+      lastUpdateTime: "2020-04-22T22:25:09Z"
+      message: ReplicaSet "voting-557f6f8bb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 8
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "8"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"web","app.kubernetes.io/part-of":"emojivoto","app.kubernetes.io/version":"v9"},"name":"web","namespace":"emojivoto"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"web-svc"}},"template":{"metadata":{"labels":{"app":"web-svc"}},"spec":{"containers":[{"env":[{"name":"WEB_PORT","value":"8080"},{"name":"EMOJISVC_HOST","value":"emoji-svc.emojivoto:8080"},{"name":"VOTINGSVC_HOST","value":"voting-svc.emojivoto:8080"},{"name":"INDEX_BUNDLE","value":"dist/index_bundle.js"}],"image":"buoyantio/emojivoto-web:v9","name":"web-svc","ports":[{"containerPort":8080,"name":"http"}],"resources":{"requests":{"cpu":"100m"}}}],"serviceAccountName":"web"}}}}
+    creationTimestamp: "2020-04-21T19:37:22Z"
+    generation: 8
+    labels:
+      app.kubernetes.io/name: web
+      app.kubernetes.io/part-of: emojivoto
+      app.kubernetes.io/version: v9
+    name: web
+    namespace: emojivoto
+    resourceVersion: "531403"
+    selfLink: /apis/apps/v1/namespaces/emojivoto/deployments/web
+    uid: 682557c9-c56e-4514-9fc1-54c28d854b43
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: web-svc
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          config.linkerd.io/trace-collector: otel-collector.tracing:55678
+          kubectl.kubernetes.io/restartedAt: "2020-04-22T15:24:56-07:00"
+        creationTimestamp: null
+        labels:
+          app: web-svc
+      spec:
+        containers:
+        - env:
+          - name: WEB_PORT
+            value: "8080"
+          - name: EMOJISVC_HOST
+            value: emoji-svc.emojivoto:8080
+          - name: VOTINGSVC_HOST
+            value: voting-svc.emojivoto:8080
+          - name: INDEX_BUNDLE
+            value: dist/index_bundle.js
+          - name: OC_AGENT_HOST
+            value: otel-collector.tracing:55678
+          image: buoyantio/emojivoto-web:v9
+          imagePullPolicy: IfNotPresent
+          name: web-svc
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: web
+        serviceAccountName: web
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-04-22T21:44:18Z"
+      lastUpdateTime: "2020-04-22T21:44:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-04-21T19:37:22Z"
+      lastUpdateTime: "2020-04-22T22:25:10Z"
+      message: ReplicaSet "web-d44d89bd8" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 8
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

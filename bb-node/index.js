@@ -10,6 +10,7 @@ process.argv.forEach((e, i) => {
 
 let serverType = process.argv[2]
 let port = process.argv[3]
+let keepAliveTimeout = 5000
 let remoteUrl
 
 if (port == undefined) {
@@ -27,6 +28,10 @@ if (serverType == undefined) {
     }
 
     console.log('remoteUrl is ' + remoteUrl)
+}
+
+if (process.argv[5] || process.argv[5] !== '') {
+    keepAliveTimeout = process.argv[5]
 }
 
 console.log('serverType is ' + serverType)
@@ -52,4 +57,4 @@ app.get('/', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
-})
+}).keepAliveTimeout(keepAliveTimeout)

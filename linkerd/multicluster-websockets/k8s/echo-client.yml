@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-client
+spec:
+  selector:
+    matchLabels:
+      app: echo-client
+  template:
+    metadata:
+      labels:
+        app: echo-client  
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: echo-client
+        image: ghcr.io/cpretzer/wsecho:v0.1.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+          name: tcp
+        command: ["/out/echo-client"]
+        args: ["--addr", "server.echo.svc.cluster.local:8080"]

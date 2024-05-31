@@ -1,0 +1,9 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: web
+  namespace: emojivoto
+spec:
+  prefix: /
+  service: web-svc:80
+  add_linkerd_headers: true
